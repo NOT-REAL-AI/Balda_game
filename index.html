@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Балда 3x3 — игра на доверии</title>
+    <title>Балда 3x3 — своё начальное слово, полная свобода слова</title>
     <style>
         * {
             box-sizing: border-box;
@@ -22,9 +22,8 @@
             padding: 16px;
         }
 
-        /* карточка игры */
         .game-container {
-            max-width: 500px;
+            max-width: 520px;
             width: 100%;
             background: #fef9e6;
             border-radius: 64px 64px 48px 48px;
@@ -34,31 +33,60 @@
             transition: all 0.2s;
         }
 
-        /* заголовок */
         .game-header {
             text-align: center;
             margin-bottom: 20px;
         }
         .game-header h1 {
             margin: 0;
-            font-size: 2.2rem;
+            font-size: 2rem;
             letter-spacing: 2px;
             color: #ffd966;
             text-shadow: 3px 3px 0 #7a2e19;
             font-weight: 800;
         }
-        .game-header p {
-            margin: 6px 0 0;
-            color: #3b2a1f;
-            font-weight: bold;
-            background: #fff0c0;
-            display: inline-block;
-            padding: 4px 16px;
+        .start-word-setup {
+            background: #fffaec;
             border-radius: 60px;
-            font-size: 0.75rem;
+            padding: 10px 12px;
+            margin: 12px 0 8px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .start-word-setup span {
+            font-weight: bold;
+            color: #4a2e1e;
+        }
+        .start-word-inputs {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+        .start-letter {
+            width: 55px;
+            height: 55px;
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            background: #fff2df;
+            border: 2px solid #cbad7a;
+            border-radius: 20px;
+            font-family: monospace;
+        }
+        .btn-small {
+            background: #d9b48b;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-weight: bold;
+            color: #2c1a0c;
+            cursor: pointer;
         }
 
-        /* имена и статус */
         .players-panel {
             display: flex;
             justify-content: space-between;
@@ -80,16 +108,17 @@
         }
         .player-name {
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
+            flex-wrap: wrap;
         }
         .player-name input {
             font-weight: bold;
-            font-size: 1rem;
-            width: 90px;
+            font-size: 0.9rem;
+            width: 85px;
             text-align: center;
             background: #fffaf0;
             border: 1px solid #cbad7a;
@@ -113,7 +142,6 @@
             margin-top: 6px;
         }
 
-        /* игровое поле 3x3 (сетка) */
         .board {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -132,7 +160,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.4rem;
+            font-size: 2.2rem;
             font-weight: 800;
             font-family: monospace;
             color: #2e241f;
@@ -151,14 +179,9 @@
         .cell.empty-cell {
             background: #f0e2cd;
             color: #bc9a76;
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: normal;
         }
-        .cell.filled-cell {
-            background: #fff2df;
-        }
-
-        /* зона выбора слова */
         .word-area {
             background: #e9dccd;
             border-radius: 60px;
@@ -180,11 +203,9 @@
             box-shadow: inset 0 1px 4px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.05);
         }
         .word-hint {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #5a3e2a;
         }
-
-        /* кнопки */
         .action-buttons {
             display: flex;
             gap: 14px;
@@ -192,9 +213,9 @@
             margin: 12px 0 8px;
         }
         .btn {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
-            padding: 12px 24px;
+            padding: 12px 20px;
             border: none;
             border-radius: 60px;
             background: #f3d382;
@@ -213,11 +234,6 @@
         .btn-primary {
             background: #f0b27a;
             color: #2c1a0c;
-            font-weight: bold;
-        }
-        .btn-reset {
-            background: #cdb28b;
-            box-shadow: 0 4px 0 #7a5d3c;
         }
         .used-words {
             background: #fff2e0;
@@ -225,7 +241,7 @@
             padding: 12px;
             margin-top: 18px;
             font-size: 0.75rem;
-            max-height: 110px;
+            max-height: 120px;
             overflow-y: auto;
         }
         .used-title {
@@ -252,17 +268,9 @@
             margin: 10px 0 0;
         }
         @media (max-width: 480px) {
-            .cell {
-                font-size: 1.8rem;
-            }
-            .current-word {
-                font-size: 1.5rem;
-                letter-spacing: 2px;
-            }
-            .player-name input {
-                width: 70px;
-                font-size: 0.8rem;
-            }
+            .cell { font-size: 1.6rem; }
+            .current-word { font-size: 1.4rem; letter-spacing: 2px; }
+            .start-letter { width: 48px; height: 48px; font-size: 1.4rem; }
         }
     </style>
 </head>
@@ -270,7 +278,15 @@
 <div class="game-container" id="gameRoot">
     <div class="game-header">
         <h1>БАЛДА 3×3</h1>
-        <p>✍️ честная игра на доверии ✍️</p>
+        <div class="start-word-setup">
+            <span>📝 Начальное слово (3 буквы):</span>
+            <div class="start-word-inputs">
+                <input type="text" class="start-letter" id="startLetter0" maxlength="1" placeholder="Б">
+                <input type="text" class="start-letter" id="startLetter1" maxlength="1" placeholder="А">
+                <input type="text" class="start-letter" id="startLetter2" maxlength="1" placeholder="К">
+            </div>
+            <button class="btn-small" id="applyStartWordBtn">✅ Установить</button>
+        </div>
     </div>
 
     <div class="players-panel">
@@ -292,18 +308,17 @@
         </div>
     </div>
 
-    <!-- поле 3x3 -->
     <div class="board" id="board"></div>
 
     <div class="word-area">
-        <div class="word-hint">📱 веди пальцем по буквам (соседние клетки)</div>
+        <div class="word-hint">👆 веди пальцем по буквам (соседние клетки)</div>
         <div class="current-word" id="currentWordDisplay">———</div>
-        <div class="word-hint">✨ слово должно содержать НОВУЮ букву ✨</div>
+        <div class="word-hint">✨ новая буква может быть в любом месте слова ✨</div>
     </div>
 
     <div class="action-buttons">
         <button class="btn btn-primary" id="submitWordBtn">✅ ПОДТВЕРДИТЬ СЛОВО</button>
-        <button class="btn btn-reset" id="clearPathBtn">🗑️ Очистить</button>
+        <button class="btn" id="clearPathBtn">🗑️ Очистить путь</button>
     </div>
 
     <div class="used-words" id="usedWordsPanel">
@@ -311,39 +326,24 @@
         <div id="usedWordsList">— пока нет —</div>
     </div>
     <div class="info-message" id="infoMsg">
-        🔥 Игроки по очереди: добавить 1 букву → провести слово → подтвердить
+        🔥 Сначала выберите начальное слово из 3 букв (оно встанет по центру). Затем ходите: добавить букву → провести любое слово (новая буква — где угодно) → подтвердить.
     </div>
 </div>
 
 <script>
-    // ---------- ИНИЦИАЛИЗАЦИЯ ПОЛЯ (3x3) ----------
-    // начальная сетка: центр - буква 'Л', 'Е', 'С'? нет, слово ЛЕС из трёх клеток центрального ряда
-    // по правилам классической балды на 3x3 чаще центральное слово занимает среднюю строку: [0,1] [1,1] [2,1] или горизонталь.
-    // Чтобы игра была логичной: расположим слово "ЛЕС" в центральной горизонтали: (1,0) = Л, (1,1) = Е, (1,2) = С
-    // остальные клетки пустые.
-    const ROWS = 3;
-    const COLS = 3;
-    // буквы на поле: null = пусто
-    let grid = [
-        [null, null, null],
-        [null, null, null],
-        [null, null, null]
-    ];
-    // начальное слово ЛЕС в центре строки 1 (индексация 0)
-    grid[1][0] = 'Л';
-    grid[1][1] = 'Е';
-    grid[1][2] = 'С';
-
-    // ---------- Глобальное состояние игры ----------
-    let currentPlayer = 0;           // 0 - игрок1, 1 - игрок2
+    // -------- РАЗМЕР ПОЛЯ --------
+    const SIZE = 3;
+    let grid = Array(SIZE).fill().map(() => Array(SIZE).fill(null));
+    
+    // Игровое состояние
+    let currentPlayer = 0;   // 0 - игрок1, 1 - игрок2
     let scores = [0, 0];
-    let usedWordsSet = new Set();     // все слова (верхний регистр) которые уже были сыграны
-    let allCellsFilled = false;       // флаг заполнения всех клеток
-
-    // Временное состояние для построения слова (выбор пути)
-    let selectedCells = [];            // массив {row, col}
-    let lastPlacedLetterPos = null;    // {row, col} позиция новой буквы, добавленной в этом ходу
-    let freeLettersLeft = 0;           // сколько свободных пустых клеток (несчитаем занятые)
+    let usedWordsSet = new Set();
+    let gameOver = false;
+    
+    // Состояние хода
+    let lastPlacedLetterPos = null;   // координаты {row, col} только что добавленной буквы в этом ходу
+    let selectedCells = [];            // путь, которым игрок составляет слово
     
     // DOM элементы
     const boardEl = document.getElementById('board');
@@ -357,174 +357,293 @@
     const usedWordsListDiv = document.getElementById('usedWordsList');
     const infoMsgDiv = document.getElementById('infoMsg');
     const submitBtn = document.getElementById('submitWordBtn');
-    const clearBtn = document.getElementById('clearPathBtn');
+    const clearPathBtn = document.getElementById('clearPathBtn');
+    const applyStartBtn = document.getElementById('applyStartWordBtn');
+    const startInputs = [
+        document.getElementById('startLetter0'),
+        document.getElementById('startLetter1'),
+        document.getElementById('startLetter2')
+    ];
 
-    // для получения имён
-    const p1NameInput = document.getElementById('p1Name');
-    const p2NameInput = document.getElementById('p2Name');
-
-    // обновление отображения очков и активного игрока
-    function updateUI_players() {
-        p1ScoreEl.innerText = scores[0];
-        p2ScoreEl.innerText = scores[1];
-        const active = currentPlayer;
-        if (active === 0) {
-            p1Card.classList.add('active-turn');
-            p2Card.classList.remove('active-turn');
-            p1TurnBadge.innerText = '🔴 ХОД';
-            p2TurnBadge.innerText = '';
-        } else {
-            p2Card.classList.add('active-turn');
-            p1Card.classList.remove('active-turn');
-            p2TurnBadge.innerText = '🔴 ХОД';
-            p1TurnBadge.innerText = '';
-        }
+    // Вспомогательные функции
+    function getPlayerName(idx) {
+        return idx === 0 ? (document.getElementById('p1Name').value.trim() || 'Игрок А') : (document.getElementById('p2Name').value.trim() || 'Игрок Б');
+    }
+    function getCurrentPlayerName() {
+        return getPlayerName(currentPlayer);
+    }
+    
+    function showMessage(msg, duration = 1800) {
+        infoMsgDiv.innerText = msg;
+        setTimeout(() => {
+            if (infoMsgDiv.innerText === msg) {
+                if (!gameOver) infoMsgDiv.innerText = '🔥 Добавь букву → проведи слово (новая буква может быть в любом месте) → подтвердить';
+                else infoMsgDiv.innerText = '🏁 Игра окончена. Нажмите "Сбросить игру" или установите новое слово.';
+            }
+        }, duration);
     }
 
-    // отображение списка использованных слов
+    // Обновление интерфейса игроков, активного хода
+    function updateUI() {
+        p1ScoreEl.innerText = scores[0];
+        p2ScoreEl.innerText = scores[1];
+        if (!gameOver) {
+            if (currentPlayer === 0) {
+                p1Card.classList.add('active-turn');
+                p2Card.classList.remove('active-turn');
+                p1TurnBadge.innerText = '🔴 ХОД';
+                p2TurnBadge.innerText = '';
+            } else {
+                p2Card.classList.add('active-turn');
+                p1Card.classList.remove('active-turn');
+                p2TurnBadge.innerText = '🔴 ХОД';
+                p1TurnBadge.innerText = '';
+            }
+        } else {
+            p1Card.classList.remove('active-turn');
+            p2Card.classList.remove('active-turn');
+            p1TurnBadge.innerText = gameOver ? '🏁' : '';
+            p2TurnBadge.innerText = gameOver ? '🏁' : '';
+        }
+    }
+    
+    // Обновление списка использованных слов
     function updateUsedWordsList() {
         if (usedWordsSet.size === 0) {
             usedWordsListDiv.innerHTML = '— пока нет —';
             return;
         }
         let html = '';
-        const arr = Array.from(usedWordsSet);
-        arr.sort();
-        arr.forEach(w => {
+        Array.from(usedWordsSet).sort().forEach(w => {
             html += `<span class="word-badge">${w}</span>`;
         });
         usedWordsListDiv.innerHTML = html;
     }
-
-    // проверка, можно ли добавить новую букву в позицию (row,col) — только если клетка пустая и соседствует хотя бы с одной занятой буквой
+    
+    // Получить слово из текущего пути
+    function getWordFromPath() {
+        if (selectedCells.length === 0) return '';
+        let word = '';
+        for (let cell of selectedCells) {
+            const ch = grid[cell.row][cell.col];
+            if (ch === null) return '';
+            word += ch;
+        }
+        return word;
+    }
+    
+    function updateCurrentWordDisplay() {
+        const w = getWordFromPath();
+        currentWordDisplay.innerText = w === '' ? '———' : w;
+    }
+    
+    // Проверка, можно ли поставить новую букву в клетку (пустая и есть соседняя буква)
     function isValidNewLetterPosition(row, col) {
-        if (grid[row][col] !== null) return false; // уже занято
-        
-        // соседи (вверх/вниз/влево/вправо)
+        if (grid[row][col] !== null) return false;
         const dirs = [[-1,0],[1,0],[0,-1],[0,1]];
         for (let [dr, dc] of dirs) {
-            const nr = row + dr, nc = col + dc;
-            if (nr>=0 && nr<ROWS && nc>=0 && nc<COLS && grid[nr][nc] !== null) {
-                return true;
-            }
+            const nr = row+dr, nc = col+dc;
+            if (nr>=0 && nr<SIZE && nc>=0 && nc<SIZE && grid[nr][nc] !== null) return true;
         }
         return false;
     }
-
-    // получить все доступные для добавления буквы клетки (пустые и имеющие соседа-букву)
-    function getAvailableForLetterCells() {
-        let available = [];
-        for (let i=0;i<ROWS;i++) {
-            for (let j=0;j<COLS;j++) {
-                if (grid[i][j] === null && isValidNewLetterPosition(i,j)) {
-                    available.push({row:i, col:j});
-                }
+    
+    // Получить все клетки, куда можно добавить букву
+    function getAvailableCells() {
+        let avail = [];
+        for (let i=0;i<SIZE;i++) {
+            for (let j=0;j<SIZE;j++) {
+                if (grid[i][j] === null && isValidNewLetterPosition(i,j)) avail.push({row:i, col:j});
             }
         }
-        return available;
+        return avail;
     }
-
-    // проверка: может ли игрок сейчас добавить букву (и есть ли свободные клетки)
-    function canAddLetter() {
-        if (allCellsFilled) return false;
-        const available = getAvailableForLetterCells();
-        return available.length > 0;
+    
+    // Проверка заполнености поля
+    function isBoardFull() {
+        for (let i=0;i<SIZE;i++) {
+            for (let j=0;j<SIZE;j++) {
+                if (grid[i][j] === null) return false;
+            }
+        }
+        return true;
     }
-
-    // Начать новый ход (сброс выбранного пути и ожидание добавления буквы)
-    function resetTurnSelection() {
-        selectedCells = [];
+    
+    // Завершение игры
+    function checkGameEnd() {
+        if (isBoardFull()) {
+            gameOver = true;
+            let winnerMsg = '';
+            if (scores[0] > scores[1]) winnerMsg = `🏆 Победа ${getPlayerName(0)}! 🏆`;
+            else if (scores[1] > scores[0]) winnerMsg = `🏆 Победа ${getPlayerName(1)}! 🏆`;
+            else winnerMsg = `🤝 Ничья! ${scores[0]} : ${scores[1]}`;
+            showMessage(`🎉 Игра окончена! Все клетки заполнены. ${winnerMsg}`, 4000);
+            updateUI();
+            return true;
+        }
+        return false;
+    }
+    
+    // Очистка текущего выбранного пути (без удаления добавленной буквы)
+    function clearPath() {
+        if (lastPlacedLetterPos !== null) {
+            selectedCells = [{ row: lastPlacedLetterPos.row, col: lastPlacedLetterPos.col }];
+            renderBoard();
+            updateCurrentWordDisplay();
+            showMessage('🧹 Путь сброшен, начинайте заново с новой буквы.', 1000);
+        } else {
+            showMessage('Нет активной новой буквы, очищать нечего.', 800);
+        }
+    }
+    
+    // Сброс хода (начало нового хода, не сбрасываем поле)
+    function resetTurnState() {
         lastPlacedLetterPos = null;
-        renderBoard(); // обновим подсветку
+        selectedCells = [];
+        renderBoard();
         updateCurrentWordDisplay();
-        // снимаем любые выделения
     }
-
-    // отрисовка поля с подсветкой выбранного пути
+    
+    // Переключение хода после успешного слова
+    function nextTurn() {
+        currentPlayer = currentPlayer === 0 ? 1 : 0;
+        resetTurnState();
+        updateUI();
+        // дополнительная проверка: если нет доступных клеток для добавления буквы, но поле не заполнено - игра блокируется (маловероятно)
+        if (!gameOver && getAvailableCells().length === 0 && !isBoardFull()) {
+            showMessage('⚠️ Нет клеток для хода! Игра завершена досрочно.', 2000);
+            gameOver = true;
+            updateUI();
+        }
+        if (checkGameEnd()) gameOver = true;
+    }
+    
+    // Подтверждение слова
+    function confirmWord() {
+        if (gameOver) {
+            showMessage('Игра завершена, установите новое начальное слово или нажмите "Сбросить игру"', 1500);
+            return;
+        }
+        if (lastPlacedLetterPos === null) {
+            showMessage('🔤 Сначала добавьте новую букву (нажмите на пустую клетку рядом с буквами)', 1300);
+            return;
+        }
+        if (selectedCells.length < 2) {
+            showMessage('❌ Составьте слово минимум из 2 букв (проведите по клеткам)', 1200);
+            return;
+        }
+        const word = getWordFromPath();
+        if (word === '') {
+            showMessage('❗ Ошибка: выбранный путь содержит пустую клетку', 1000);
+            return;
+        }
+        
+        // ПРОВЕРКА: слово должно содержать новую букву (где угодно, не обязательно в начале)
+        const newLetter = grid[lastPlacedLetterPos.row][lastPlacedLetterPos.col];
+        if (!word.includes(newLetter)) {
+            showMessage(`❌ Составленное слово "${word}" не содержит новую букву "${newLetter}"! Исправьте путь.`, 1800);
+            return;
+        }
+        
+        // Проверка на повтор слова
+        if (usedWordsSet.has(word)) {
+            showMessage(`🚫 Слово "${word}" уже использовалось! Придумайте новое слово.`, 1500);
+            return;
+        }
+        
+        // Всё хорошо: начисляем очки (длина слова)
+        const points = word.length;
+        scores[currentPlayer] += points;
+        usedWordsSet.add(word);
+        
+        showMessage(`✅ ${getCurrentPlayerName()} составил(а) слово "${word}" +${points} очков!`, 1800);
+        updateUI();
+        updateUsedWordsList();
+        
+        // проверить, не заполнилось ли поле после этого хода?
+        if (isBoardFull()) {
+            gameOver = true;
+            updateUI();
+            checkGameEnd();
+            return;
+        }
+        
+        // переключение хода
+        nextTurn();
+    }
+    
+    // Отрисовка поля с подсветкой выбранного пути
     function renderBoard() {
         boardEl.innerHTML = '';
-        for (let i=0;i<ROWS;i++) {
-            for (let j=0;j<COLS;j++) {
+        for (let i=0;i<SIZE;i++) {
+            for (let j=0;j<SIZE;j++) {
                 const letter = grid[i][j];
                 const cellDiv = document.createElement('div');
                 cellDiv.classList.add('cell');
                 const isSelected = selectedCells.some(sel => sel.row === i && sel.col === j);
-                if (isSelected) {
-                    cellDiv.classList.add('selected-path');
-                }
+                if (isSelected) cellDiv.classList.add('selected-path');
                 if (letter === null) {
                     cellDiv.classList.add('empty-cell');
                     cellDiv.innerText = '?';
                 } else {
-                    cellDiv.classList.add('filled-cell');
                     cellDiv.innerText = letter;
                 }
-                // обработка клика/тапа
                 cellDiv.addEventListener('click', (function(row, col) {
-                    return function() { onCellTap(row, col); };
+                    return () => onCellTap(row, col);
                 })(i, j));
                 boardEl.appendChild(cellDiv);
             }
         }
     }
-
-    // обработка касания клетки
+    
+    // Логика нажатия на клетку (добавление буквы ИЛИ построение пути)
     function onCellTap(row, col) {
-        if (allCellsFilled) {
-            showMessage('🏆 Игра окончена! Все клетки заполнены. Нажмите "Сброс игры"', 1500);
+        if (gameOver) {
+            showMessage('Игра окончена, обновите начальное слово или сбросьте', 1000);
             return;
         }
-        const letter = grid[row][col];
-        const isFreeCell = (letter === null);
         
-        // Сценарий 1: если ещё не добавлена новая буква в этом ходу
+        // Случай 1: Нет активной новой буквы (нужно добавить новую букву)
         if (lastPlacedLetterPos === null) {
-            // можно добавить новую букву только в пустую допустимую клетку
-            if (!isFreeCell) {
-                showMessage('❌ Сначала добавьте новую букву в пустую клетку (соседнюю с буквами)', 1200);
+            // Клетка должна быть пустой и подходить для установки
+            if (grid[row][col] !== null) {
+                showMessage('❌ Сначала нужно добавить новую букву в пустую клетку, соседнюю с буквами', 1200);
                 return;
             }
             if (!isValidNewLetterPosition(row, col)) {
-                showMessage('⚠️ Букву можно ставить только рядом с существующими буквами (по горизонтали/вертикали)!', 1200);
+                showMessage('⚠️ Новая буква должна стоять рядом (по горизонтали/вертикали) с любой существующей буквой', 1300);
                 return;
             }
-            // запрашиваем букву у игрока (через prompt)
-            let newLetter = prompt(`Игрок ${getCurrentPlayerName()}, введите ОДНУ заглавную русскую букву:`, 'А');
+            // Запрашиваем букву у игрока
+            let newLetter = prompt(`${getCurrentPlayerName()}, введите ОДНУ русскую букву (А-Я, Ё):`, 'А');
             if (!newLetter || newLetter.length === 0) return;
             newLetter = newLetter.trim().toUpperCase();
             if (!/^[А-ЯЁ]$/.test(newLetter)) {
-                showMessage('❗ Введите одну русскую букву (А-Я, Ё)', 1000);
+                showMessage('❗ Введите одну букву кириллицы', 1000);
                 return;
             }
-            // ставим букву
             grid[row][col] = newLetter;
             lastPlacedLetterPos = { row, col };
-            // начинаем путь с этой клетки
             selectedCells = [{ row, col }];
             renderBoard();
             updateCurrentWordDisplay();
-            showMessage(`➕ Добавлена буква "${newLetter}". Теперь проведите слово (нажимайте соседние клетки)`, 1500);
+            showMessage(`➕ Добавлена буква "${newLetter}". Теперь проведите слово (новая буква может быть в любом месте слова)`, 2000);
             return;
         }
         
-        // Сценарий 2: буква уже добавлена, строим путь (выбираем слово)
-        // нельзя нажимать на пустые клетки, только на клетки с буквами
-        if (isFreeCell) {
-            showMessage('🔁 В слове можно использовать только клетки c буквами', 800);
+        // Случай 2: Новая буква уже добавлена, строим слово
+        // Нельзя нажимать на пустые клетки
+        if (grid[row][col] === null) {
+            showMessage('🔁 Проводить путь можно только по клеткам с буквами', 800);
             return;
         }
         
-        // проверка: клетка уже есть в текущем пути?
-        const alreadyIndex = selectedCells.findIndex(c => c.row === row && c.col === col);
-        if (alreadyIndex !== -1) {
-            // если это последняя клетка - ничего не делаем, если предыдущая - можно сократить?
-            if (alreadyIndex === selectedCells.length-1) return; // уже последняя
-            // если это начало или середина -> обрезаем путь до этой клетки
-            if (alreadyIndex === 0 && selectedCells.length > 1) {
-                // если нажали на первую клетку пути, то можно сбросить до первой (не меняем)
-                // но ничего страшного не делаем
-            }
-            selectedCells = selectedCells.slice(0, alreadyIndex+1);
+        // проверка: если клетка уже в пути
+        const existingIndex = selectedCells.findIndex(c => c.row === row && c.col === col);
+        if (existingIndex !== -1) {
+            // если это последняя - ничего, если это предыдущая - обрезаем путь
+            if (existingIndex === selectedCells.length-1) return;
+            selectedCells = selectedCells.slice(0, existingIndex+1);
             renderBoard();
             updateCurrentWordDisplay();
             return;
@@ -532,214 +651,79 @@
         
         // проверка соседства с последней клеткой пути
         const last = selectedCells[selectedCells.length-1];
-        const dx = Math.abs(last.row - row);
-        const dy = Math.abs(last.col - col);
-        const isAdjacent = (dx + dy === 1);
-        if (!isAdjacent) {
-            showMessage('❌ Можно ходить только в соседнюю клетку (вверх/вниз/влево/вправо)', 800);
+        const delta = Math.abs(last.row - row) + Math.abs(last.col - col);
+        if (delta !== 1) {
+            showMessage('❌ Перемещайтесь только в соседнюю клетку (вверх/вниз/влево/вправо)', 800);
             return;
         }
         
-        // добавляем новую клетку в путь
+        // добавляем новую клетку
         selectedCells.push({ row, col });
         renderBoard();
         updateCurrentWordDisplay();
     }
     
-    // получить текущее составленное слово из выбранного пути
-    function getCurrentWordFromPath() {
-        if (selectedCells.length === 0) return '';
-        let word = '';
-        for (let cell of selectedCells) {
-            const ch = grid[cell.row][cell.col];
-            if (ch !== null) word += ch;
-            else return '';
-        }
-        return word;
-    }
-    
-    function updateCurrentWordDisplay() {
-        const word = getCurrentWordFromPath();
-        if (word === '') currentWordDisplay.innerText = '———';
-        else currentWordDisplay.innerText = word;
-    }
-    
-    // проверка валидности хода: слово существует (без базы данных, на доверии), но должно содержать новую букву, не повторяться, минимальная длина 2
-    function validateWord(word, newLetterPos) {
-        if (word.length < 2) {
-            showMessage('❌ Слово должно быть длиной хотя бы 2 буквы', 1200);
-            return false;
-        }
-        // должно включать хотя бы раз новую букву (которая только что добавлена)
-        const newLetter = grid[newLetterPos.row][newLetterPos.col];
-        if (!word.includes(newLetter)) {
-            showMessage(`⚠️ Слово должно включать новую букву "${newLetter}"!`, 1300);
-            return false;
-        }
-        // проверка уникальности слова (регистр)
-        if (usedWordsSet.has(word)) {
-            showMessage(`🚫 Слово "${word}" уже было использовано! Нельзя повторять.`, 1400);
-            return false;
-        }
-        // В этой версии база не нужна, игра на доверии — все существительные нарицательные проверяют игроки сами.
-        // Дополнительно можно дать рекомендацию, но не блокируем.
-        return true;
-    }
-    
-    // подтверждение слова
-    function confirmWord() {
-        if (allCellsFilled) {
-            showMessage('Игра завершена, сбросьте для новой партии', 1000);
-            return;
-        }
-        if (lastPlacedLetterPos === null) {
-            showMessage('🔤 Сначала добавьте новую букву (нажмите на пустую клетку рядом с буквами)', 1300);
-            return;
-        }
-        if (selectedCells.length === 0) {
-            showMessage('👆 Проведите слово, выбрав последовательность клеток с буквами', 1200);
-            return;
-        }
-        const word = getCurrentWordFromPath();
-        if (word === '') {
-            showMessage('❗ Не удалось составить слово из выбранных клеток', 1000);
-            return;
-        }
-        
-        // валидация доверительная, но проверяем уникальность и наличие новой буквы
-        if (!validateWord(word, lastPlacedLetterPos)) {
-            return;
-        }
-        
-        // начисление очков = длине слова
-        const points = word.length;
-        scores[currentPlayer] += points;
-        // добавляем слово в список использованных
-        usedWordsSet.add(word);
-        
-        // успех!
-        showMessage(`✅ Игрок ${getCurrentPlayerName()} составил слово "${word}" и получил ${points} очков!`, 1800);
-        
-        // обновляем счёт и списки
-        updateUI_players();
-        updateUsedWordsList();
-        
-        // проверка окончания игры: все ли клетки заполнены?
-        let allFilled = true;
-        for (let i=0;i<ROWS;i++) {
-            for (let j=0;j<COLS;j++) {
-                if (grid[i][j] === null) allFilled = false;
+    // Установить начальное слово (3 буквы) по центру (горизонталь: строка 1, столбцы 0,1,2)
+    function setStartingWord() {
+        let letters = [];
+        for (let i=0;i<3;i++) {
+            let val = startInputs[i].value.trim().toUpperCase();
+            if (val.length === 0 || !/^[А-ЯЁ]$/.test(val)) {
+                showMessage(`⚠️ Буква ${i+1} не задана или неверная. Использую "ЛЕС" по умолчанию`, 1200);
+                letters = ['Л','Е','С'];
+                break;
             }
+            letters.push(val);
         }
-        if (allFilled) {
-            allCellsFilled = true;
-            let winnerMsg = '';
-            if (scores[0] > scores[1]) winnerMsg = `🏆 Победил ${getPlayerName(0)}! 🏆`;
-            else if (scores[1] > scores[0]) winnerMsg = `🏆 Победил ${getPlayerName(1)}! 🏆`;
-            else winnerMsg = `🤝 Ничья! ${scores[0]} : ${scores[1]}`;
-            showMessage(`🎉 Игра окончена! Все клетки заполнены. ${winnerMsg}`, 4000);
-            submitBtn.disabled = true;
-            return;
-        }
+        if (letters.length !== 3) letters = ['Л','Е','С'];
+        // Пересоздаём чистое поле
+        grid = Array(SIZE).fill().map(() => Array(SIZE).fill(null));
+        // горизонталь по центру: строка 1 (индекс 1)
+        grid[1][0] = letters[0];
+        grid[1][1] = letters[1];
+        grid[1][2] = letters[2];
         
-        // переход хода
-        currentPlayer = currentPlayer === 0 ? 1 : 0;
-        // очищаем состояние выбора и новую букву для следующего хода
-        resetTurnSelection();
-        lastPlacedLetterPos = null;
-        selectedCells = [];
-        renderBoard();
-        updateUI_players();
-        // дополнительно, если ход следующего игрока, но нет доступных клеток для добавления? (редко , в балде почти всегда есть)
-        const availableNow = getAvailableForLetterCells();
-        if (availableNow.length === 0 && !allCellsFilled) {
-            // случай блокировки (формально не должно быть, но обработаем)
-            showMessage('⚠️ Нет доступных клеток для добавления буквы — игра закончена досрочно', 2000);
-            allCellsFilled = true;
-        }
-    }
-    
-    function getCurrentPlayerName() {
-        return currentPlayer === 0 ? (p1NameInput.value.trim() || 'Игрок А') : (p2NameInput.value.trim() || 'Игрок Б');
-    }
-    function getPlayerName(idx) {
-        return idx === 0 ? (p1NameInput.value.trim() || 'Игрок А') : (p2NameInput.value.trim() || 'Игрок Б');
-    }
-    
-    function showMessage(msg, duration = 1500) {
-        infoMsgDiv.innerText = msg;
-        setTimeout(() => {
-            if (infoMsgDiv.innerText === msg) {
-                if (!allCellsFilled) infoMsgDiv.innerText = '🔥 Игроки по очереди: добавить 1 букву → провести слово → подтвердить';
-                else infoMsgDiv.innerText = '🏁 Игра завершена, нажмите "Сбросить игру"';
-            }
-        }, duration);
-    }
-    
-    // сброс всей игры
-    function resetGame() {
-        // пересоздаём поле
-        grid = [
-            [null, null, null],
-            [null, null, null],
-            [null, null, null]
-        ];
-        grid[1][0] = 'Л';
-        grid[1][1] = 'Е';
-        grid[1][2] = 'С';
-        scores = [0, 0];
+        // Сброс всей игры (состояния)
+        scores = [0,0];
         usedWordsSet.clear();
         currentPlayer = 0;
-        allCellsFilled = false;
+        gameOver = false;
         lastPlacedLetterPos = null;
         selectedCells = [];
-        submitBtn.disabled = false;
-        updateUI_players();
+        
+        updateUI();
         updateUsedWordsList();
-        resetTurnSelection();
         renderBoard();
-        showMessage('🔄 Игра перезапущена! Начальное слово ЛЕС в центре. Первый ход — добавляем букву.', 2000);
+        updateCurrentWordDisplay();
+        showMessage(`✨ Новое начальное слово: ${letters.join('')}. Игра начата заново!`, 1800);
     }
     
-    // очистка текущего выбранного пути (но без отката добавленной буквы)
-    function clearCurrentPath() {
-        if (lastPlacedLetterPos !== null) {
-            // нельзя удалить букву, только путь обнуляем, но можно перевыбрать путь
-            selectedCells = [{ row: lastPlacedLetterPos.row, col: lastPlacedLetterPos.col }];
-            renderBoard();
-            updateCurrentWordDisplay();
-            showMessage('🧹 Путь очищен, начните выбор с новой буквы.', 1000);
-        } else {
-            showMessage('Нет активной новой буквы, чтобы очистить путь', 800);
-        }
+    // Полный сброс (кнопка сброса также)
+    function fullReset() {
+        setStartingWord(); // повторно использует текущие значения полей ввода
     }
     
-    // Инициализация событий
-    function bindEvents() {
+    // Привязка событий и создание интерфейса
+    function bindGlobalEvents() {
         submitBtn.addEventListener('click', confirmWord);
-        clearBtn.addEventListener('click', clearCurrentPath);
-        // добавим кнопку сброса в интерфейс? она была в кнопках но не хватало сброса, добавим отдельную кнопку вниз?
+        clearPathBtn.addEventListener('click', clearPath);
+        applyStartBtn.addEventListener('click', () => setStartingWord());
+        // добавим кнопку сброса в панель действий
         const resetBtn = document.createElement('button');
-        resetBtn.innerText = '🔄 Сбросить игру';
-        resetBtn.className = 'btn btn-reset';
-        resetBtn.style.marginTop = '8px';
-        resetBtn.addEventListener('click', resetGame);
-        const buttonsContainer = document.querySelector('.action-buttons');
-        buttonsContainer.appendChild(resetBtn);
-        // также можно учитывать смену имён без проблем
+        resetBtn.innerText = '🔄 Сброс игры';
+        resetBtn.className = 'btn';
+        resetBtn.style.background = '#cdb28b';
+        resetBtn.addEventListener('click', fullReset);
+        document.querySelector('.action-buttons').appendChild(resetBtn);
+        
+        // Чтобы начальное слово отображалось сразу при загрузке - установим ЛЕС по умолчанию в полях
+        if (startInputs[0].value === '') startInputs[0].value = 'Л';
+        if (startInputs[1].value === '') startInputs[1].value = 'Е';
+        if (startInputs[2].value === '') startInputs[2].value = 'С';
+        setStartingWord();
     }
     
-    // запуск
-    function init() {
-        renderBoard();
-        updateUI_players();
-        updateUsedWordsList();
-        bindEvents();
-        resetTurnSelection();
-        lastPlacedLetterPos = null;
-    }
-    
-    init();
+    bindGlobalEvents();
 </script>
 </body>
 </html>
